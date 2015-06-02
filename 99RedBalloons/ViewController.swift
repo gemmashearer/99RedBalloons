@@ -10,14 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    //I need to append all of these to an array and then create a loop which will display a ran
     
     @IBOutlet weak var balloonImageView: UIImageView!
     @IBOutlet weak var numberLabel: UILabel!
     
-    // this is the array
+    // this is the array - the array is called allBalloons and contains Balloon
     var allBalloons:[Balloon] = []
-    
+    // making currentIndex a global variable so it can be accessed later
     var currentIndex = 0
 
     
@@ -30,8 +29,6 @@ class ViewController: UIViewController {
         var firstBalloon = Balloon()
         firstBalloon.number = 0
         firstBalloon.image = UIImage(named: "BerlinTVTower.jpg")
-        
-        //this code acually makes it show - it's now hard coded to show the berlin tower with no balloons when it loads. But nothing is randomised yet and I don't have an array yet.
         
         self.balloonImageView.image = firstBalloon.image
         self.numberLabel.text = "\(firstBalloon.number) Balloons"
@@ -55,10 +52,8 @@ class ViewController: UIViewController {
         fithBalloon.number = 0
         fithBalloon.image = UIImage(named: "RedBalloon4.jpg")
         
-        //appending all the balloons to the array
-         allBalloons += [secondBalloon, thirdBalloon, fourthBalloon, fithBalloon]
-        //I've not appended the berlin tv tower to the array, I may do later
-        
+        //createBalloons is the function loops through 0 - 99 and gets a random balloon image
+        self.createBalloons()
         
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -70,24 +65,36 @@ class ViewController: UIViewController {
     }
 
     @IBAction func nextBalloonButtonPressed(sender: AnyObject) {
-        //generating a random image - this bit works I just now need to write a function that generates random number and assigns it to each image view
-        //I AM SO SHOCKED THAT THIS WORKED!!!!!!!!!!!!
-        var randomIndex:Int
-        do {
-            randomIndex = Int(arc4random_uniform(UInt32(allBalloons.count)))
-        } while currentIndex == randomIndex
         
-        currentIndex = randomIndex
-        let selectedBalloon = allBalloons[randomIndex]
+        //each time the button is pressed it will add 1 to the current index so that we move through the switch statement
         
-        UIView.transitionWithView(self.view, duration: 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {
-            self.balloonImageView.image = selectedBalloon.image
-            self.numberLabel.text = "\(selectedBalloon.balloonNumber()) balloons"
+        //this links balloon to the index of the array
+        let balloon = allBalloons[currentIndex]
+        numberLabel.text = "\(balloon.number) balloon"
+        balloonImageView.image = balloon.image
+        //this initiates the progression through the loop
+        currentIndex += 1
         
-            }, completion: {(finished: Bool) -> () in
-                
-        })
-        
+    }
+        func createBalloons () {
+            //the for loop generates a random number and the switch statement shows differnt images. The image that displays depends on what the current index is
+            for var balloonCount = 0; balloonCount <= 99; ++balloonCount {
+                var balloon = Balloon()
+                //makes the index the number property
+                balloon.number = balloonCount
+                let randomNumber = Int(arc4random_uniform(UInt32(4)))
+                switch randomNumber {
+                case 1:
+                    balloon.image = UIImage(named: "RedBalloon1.jpg")
+                case 2:
+                    balloon.image = UIImage(named: "RedBalloon2.jpg")
+                case 3:
+                    balloon.image = UIImage(named: "RedBalloon3.jpg")
+                default: balloon.image = UIImage(named: "RedBalloon4.jpg")
+                }
+                self.allBalloons.append(balloon)
+            }
     }
 }
 
+//how could I have done this using a case statement? each display of the image would have needed to be a case and somehow have the random number attached to it

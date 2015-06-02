@@ -17,10 +17,12 @@ struct Balloon {
     
 // function to generate a random number
     
-    func balloonNumber() -> Int{
-    let randomNumber = Int(arc4random_uniform(UInt32(99)))
-    return randomNumber
-    }
+    var ballons:[Balloon] = []
+    
+//    func balloonNumber() -> Int{
+//        let randomNumber = Int(arc4random_uniform(UInt32(99)))
+//        return randomNumber
+//    }
 }
 
 //how the hell am I going to randomise what image gets displayed??????
